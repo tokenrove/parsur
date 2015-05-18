@@ -1,0 +1,8 @@
+html5
+library ../parse
+allow mime text/plain
+
+$/list
+$/option
+test_string
+tests
