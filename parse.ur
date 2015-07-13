@@ -25,6 +25,8 @@ functor Make(Stream : sig type t end) = struct
                | Success (x,_) => Some x
 
     (* COMBINATORS *)
+    val fail [a] : t a = fn _ => Failure
+
     fun or [a] p q : t a =
      fn s => case p s of Failure => q s | success => success
 
@@ -165,10 +167,17 @@ structure String = struct
                   val stringCI : string -> t string
                   val char : char -> t char
                   val monad_parse : monad t
+                  val takeWhile : (char -> bool) -> t (string*int)
               end) = struct
         fun string' t = _ <- S.string t; return ()
         fun stringCI' orig = _ <- S.stringCI orig; return ()
         fun char' c = _ <- S.char c; return ()
+
+        fun takeWhile' p =
+            (t,i) <- S.takeWhile p;
+            return (substring t 0 i)
+
+        fun takeTil' p = takeWhile' (not <<< p)
     end
     open String
     structure P = Ignorance(String)

@@ -2,7 +2,8 @@
 open Option
 open Parse.String
 
-val end_of_line = (_ <- char #"\n"; return ()) `or` (_ <- string "\r\n"; return ())
+val end_of_line = or (char' #"\n")
+                     (string' "\r\n")
 
 val tests =
     ("eof_of_nonempty_string_fails", isNone <| parse eof "foo") ::

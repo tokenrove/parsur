@@ -9,6 +9,7 @@ functor Make(Stream : sig type t end) : sig
     val parse : a ::: Type -> t a -> Stream.t -> option a
 
     (** Combinators *)
+    val fail : a ::: Type -> t a
     val or : a ::: Type -> t a -> t a -> t a
     val many : a ::: Type -> t a -> t (list a)
     val count : a ::: Type -> int -> t a -> t (list a)
@@ -23,6 +24,7 @@ structure String : sig
     val parse : a ::: Type -> t a -> string -> option a
 
     (** Combinators *)
+    val fail : a ::: Type -> t a
     val or : a ::: Type -> t a -> t a -> t a
     val many : a ::: Type -> t a -> t (list a)
     val count : a ::: Type -> int -> t a -> t (list a)
@@ -44,9 +46,11 @@ structure String : sig
     val skip : (char -> bool) -> t unit
     val skipWhile : (char -> bool) -> t unit
     val takeWhile : (char -> bool) -> t (string*int)
+    val takeWhile' : (char -> bool) -> t string (* conses *)
     (* Well, "till" is the correct form; but "til" is in common enough
      * usage that I'll prefer it for terseness. *)
     val takeTil : (char -> bool) -> t (string*int)
+    val takeTil' : (char -> bool) -> t string (* conses *)
     val takeRest : t string
 
     (** Convenience functions *)
@@ -66,6 +70,7 @@ structure Blob : sig
     val parse : a ::: Type -> t a -> blob -> option a
 
     (** Combinators *)
+    val fail : a ::: Type -> t a
     val or : a ::: Type -> t a -> t a -> t a
     val many : a ::: Type -> t a -> t (list a)
     val count : a ::: Type -> int -> t a -> t (list a)

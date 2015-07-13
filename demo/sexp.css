@@ -1,0 +1,4 @@
+ul { list-style: none; }
+li { padding-top: .5ex; }
+li:first-child:before { content: "↳"; margin-left: -0.9em; }
+li:last-child { display: inline; border-bottom: 1px dotted black; }
