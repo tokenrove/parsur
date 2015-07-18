@@ -30,6 +30,14 @@ functor Make(Stream : sig type t end) = struct
     fun or [a] p q : t a =
      fn s => case p s of Failure => q s | success => success
 
+    fun maybe [a] p : t (option a) =
+     fn s => case p s of Failure => Success (None, s)
+                       | Success (a, s') => Success (Some a, s')
+
+    fun maybe' [a] p : t unit =
+     fn s => case p s of Failure => Success ((), s)
+                       | Success (_, s') => Success ((), s')
+
     fun many [a] p =
         let fun f lst s =
                 case p s of

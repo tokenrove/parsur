@@ -11,6 +11,8 @@ functor Make(Stream : sig type t end) : sig
     (** Combinators *)
     val fail : a ::: Type -> t a
     val or : a ::: Type -> t a -> t a -> t a
+    val maybe : a ::: Type -> t a -> t (option a)
+    val maybe' : a ::: Type -> t a -> t unit
     val many : a ::: Type -> t a -> t (list a)
     val count : a ::: Type -> int -> t a -> t (list a)
     val skipMany : a ::: Type -> t a -> t unit
@@ -26,6 +28,8 @@ structure String : sig
     (** Combinators *)
     val fail : a ::: Type -> t a
     val or : a ::: Type -> t a -> t a -> t a
+    val maybe : a ::: Type -> t a -> t (option a)
+    val maybe' : a ::: Type -> t a -> t unit
     val many : a ::: Type -> t a -> t (list a)
     val count : a ::: Type -> int -> t a -> t (list a)
     val skipMany : a ::: Type -> t a -> t unit
@@ -72,6 +76,8 @@ structure Blob : sig
     (** Combinators *)
     val fail : a ::: Type -> t a
     val or : a ::: Type -> t a -> t a -> t a
+    val maybe : a ::: Type -> t a -> t (option a)
+    val maybe' : a ::: Type -> t a -> t unit
     val many : a ::: Type -> t a -> t (list a)
     val count : a ::: Type -> int -> t a -> t (list a)
     val skipMany : a ::: Type -> t a -> t unit
