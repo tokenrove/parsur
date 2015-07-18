@@ -15,10 +15,13 @@ tests/tests.exe: tests/test*.ur tests/test*.ur[sp] $(parse_deps)
 demo/sexp.exe: demo/sexp.ur demo/sexp.ur[sp] demo/sexp.css $(parse_deps)
 	urweb demo/sexp
 
+demo/iso8601.exe: demo/iso8601.ur demo/iso8601.ur[sp] $(parse_deps)
+	urweb demo/iso8601
+
 check: tests/tests.exe
 	prove
 
-demos: demo/sexp.exe
+demos: demo/sexp.exe demo/iso8601.exe
 
 clean:
 	$(RM) tests/tests.exe demo/sexp.exe
