@@ -34,12 +34,17 @@ val tests =
     ("skipWhile isSpace", isSome <| parse (skipWhile isspace; _ <- string "foo"; eof)
                                           "   foo") ::
     ("takeWhile isDigit", isSome <| parse (_ <- takeWhile isdigit; eof) "042") ::
-    ("takeTil isSpace", case parse ((a,i) <- takeTil isspace;
+    ("takeTil isSpace", case parse (a <- takeTil' isspace;
                                     skipWhile isspace;
-                                    (b,j) <- takeTil isspace;
+                                    b <- takeTil' isspace;
                                     eof;
-                                    return (substring a 0 i, substring b 0 j))
+                                    return (a, b))
                                    "foo  bar" of
                             Some ("foo", "bar") => True | _ => False) ::
     ("takeRest followed by eof succeeds", isSome <| parse (_ <- takeRest; eof) "whatever") ::
+    ("read unsigned decimal integer", Some 123456789 = parse (unsigned_int_of_radix 10) "0123456789") ::
+    ("read partial unsigned decimal integer", Some 12345 = parse (unsigned_int_of_radix 10) "12345foo6789") ::
+    ("unsuccessful unsigned decimal integer", None = parse (unsigned_int_of_radix 10) "foo12345foo6789") ::
+    ("read lowercase hex integer", Some 0x0DDF00D = parse (unsigned_int_of_radix 16) "0ddf00d") ::
+    ("read mixed-case hex integer", Some 0xDEADBEEF = parse (unsigned_int_of_radix 16) "DeadBeef") ::
     []

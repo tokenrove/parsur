@@ -56,8 +56,8 @@ structure String : sig
     (** Convenience functions *)
     val skipSpace : t unit
     val endOfLine : t unit
+    val unsigned_int_of_radix : int -> t int
     (*
-     * val unsigned_int_of_radix : int -> t int
      * val signed_int_of_radix : int -> t int
      * val double : t float
      *)

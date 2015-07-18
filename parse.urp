@@ -1,4 +1,5 @@
 $/string
 $/list
 $/char
+$/option
 parse

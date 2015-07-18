@@ -151,8 +151,28 @@ structure String = struct
 
     val skipSpace = skipWhile isspace
 
+    fun next_digit radix s =
+        let val digits = "0123456789abcdefghijklmnopqrstuvwxyz" in
+            (c, s) <- next s;
+            i <- String.index digits (tolower c);
+            if i < radix then Some (i,s) else None
+        end
+
+    (* XXX should check for overflow; also options end up consing so
+       it would be nice to do this without any additional memory
+       pressure. *)
+    fun unsigned_int_of_radix radix =
+     fn s =>
+        let fun loop acc digit s_so_far =
+                case digit of
+                    Some (d,s) => loop (acc*radix + d) (next_digit radix s) s
+                  | None => Success (acc, s_so_far)
+        in case next_digit radix s of
+               Some (d,s) => loop 0 (Some (d,s)) s
+             | None => Failure
+        end
+
     (*
-     * val unsigned_int_of_radix : int -> t int
      * val signed_int_of_radix : int -> t int
      * val double : t float
      *)
