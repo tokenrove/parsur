@@ -8,9 +8,9 @@ val end_of_line = or (char' #"\n")
 val tests =
     ("eof_of_nonempty_string_fails", isNone <| parse eof "foo") ::
     ("eof_of_empty_string_succeeds", isSome <| parse eof "") ::
-    ("string_succeeds", let val p = _ <- string "foo"; eof
+    ("string_succeeds", let val p = string' "foo"; eof
                         in isSome <| parse p "foo" end) ::
-    ("string_fails", let val p = _ <- string "foo"; _ <- string "baz"; eof
+    ("string_fails", let val p = string' "foo"; string' "baz"; eof
                      in isNone <| parse p "foobarbaz" end) ::
     ("stringCI_succeeds_with_more_to_come", isSome <| parse (stringCI "fOo") "FoOBAR") ::
     ("stringCI_succeeds_on_string_of_same_length", isSome <| parse (stringCI "foo") "fOo") ::
@@ -24,14 +24,14 @@ val tests =
     ("drop 1 on empty string fails", isNone <| parse (drop 1) "") ::
     ("drop of same length as string succeeds", isSome <| parse (drop 3) "foo") ::
     ("drop followed by string and eof succeeds", isSome <| parse (drop 3;
-                                                                  _ <- string "bar";
+                                                                  string' "bar";
                                                                   eof)
                                                                  "foobar") ::
     ("satisfy isDigit 0", isSome <| parse (satisfy isdigit) "0") ::
     ("satisfy isDigit f", isNone <| parse (satisfy isdigit) "f") ::
     ("skip space succeeds", isSome <| parse (skip isspace; eof) " ") ::
     ("skip space fails", isNone <| parse (skip isspace) ".") ::
-    ("skipWhile isSpace", isSome <| parse (skipWhile isspace; _ <- string "foo"; eof)
+    ("skipWhile isSpace", isSome <| parse (skipWhile isspace; string' "foo"; eof)
                                           "   foo") ::
     ("takeWhile isDigit", isSome <| parse (_ <- takeWhile isdigit; eof) "042") ::
     ("takeTil isSpace", case parse (a <- takeTil' isspace;
