@@ -1,5 +1,5 @@
 
-URWEB := urweb
+URWEB ?= urweb
 
 .PHONY: default check clean demos all
 
