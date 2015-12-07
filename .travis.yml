@@ -1,0 +1,16 @@
+sudo: required
+language: c
+before_install:
+ - echo "deb http://de.archive.ubuntu.com/ubuntu/ precise multiverse" | sudo tee -a /etc/apt/sources.list
+ - sudo apt-get update -qq
+install:
+ - sudo apt-get install -qq -y mlton libssl-dev
+ - wget http://impredicative.com/ur/urweb-20150819.tgz
+ - tar xzf urweb-20150819.tgz
+ - cd urweb-20150819
+ - ./configure --without-emacs
+ - make
+ - sudo make install
+script:
+ - cd $TRAVIS_BUILD_DIR
+ - make all
